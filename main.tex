@@ -1,0 +1,763 @@
+\documentclass[a4paper, 12pt, oneside, openany]{article}
+\frenchspacing
+\usepackage[left=3cm,right=1.5cm,top=2cm,bottom=2cm]{geometry}
+\pagestyle{plain}
+
+% ✅ Кодировка и шрифты (ПРАВИЛЬНЫЙ ПОРЯДОК)
+\usepackage[T2A]{fontenc}      % ✅ Только T2A для русского!
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}           % ✅ Масштабируемые шрифты
+\usepackage[russian]{babel}
+
+% ✅ Остальные пакеты
+\usepackage{float}
+\usepackage{flafter}
+\usepackage{wrapfig}
+\usepackage[pdftex,unicode]{hyperref}
+% ... гиперссылки настройки ...
+
+% ✅ Microtype (после шрифтов, с final)
+\usepackage[expansion=false, protrusion=false]{microtype}  % ✅ Отключить всё проблемное
+
+\usepackage{amsmath, amssymb}
+\usepackage[warn]{mathtext}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usepackage{tikz}              % ✅ ДОБАВИТЬ СЮДА
+\usetikzlibrary{shapes,arrows,positioning,calc}
+
+
+%% Реализация библиографии пакетами biblatex и biblatex-gost с использованием движка biber -- не работает в overleaf из-за долгой компиляции в бесплатном режиме. В других приложениях можно брать %%%
+%
+%\usepackage{csquotes} % Пакет для оформления сложных блоков цитирования (biblatex рекомендует его подключать)
+%\usepackage[%
+%backend=biber,                                      % Движок
+%bibencoding=utf8,                                   % Кодировка bib-файла
+%sorting=none,                                       % Настройка сортировки списка литературы
+%style=gost-numeric,                                 % Стиль цитирования и библиографии по ГОСТ
+%language=auto,                                      % Язык для каждой библиографической записи задается отдельно
+%autolang=other,                                     % Поддержка многоязычной библиографии
+%sortcites=true,                                     % Если в квадратных скобках несколько ссылок, то отображаться будут отсортированно
+%movenames=false,                                    % Не перемещать имена, они всегда в начале библиографической записи
+% maxnames=5,                                         % Максимальное отображаемое число авторов
+% minnames=3,                                         % До скольки сокращать число авторов, если их больше максимума
+% doi=false,                                          % Не отображать ссылки на DOI
+% isbn=false,                                         % Не показывать ISBN, ISSN, ISRN
+% ]{biblatex}[2016/09/17]
+% \DeclareDelimFormat{bibinitdelim}{}                 % Убираем пробел между инициалами (Иванов И.И. вместо Иванов И. И.)
+% \addbibresource{biba.bib}                           % Определяем файл с библиографией
+%
+% %%% Скрипт, который автоматически подбирает язык (и, следовательно, формат) для каждой библиографической записи %%%
+% %%% Если в названии работы есть кириллица - меняем значение поля langid на russian %%%
+%%%% Все оставшиеся пустые места в поле langid заменяем на english %%%
+%
+%\DeclareSourcemap{
+%   \maps[datatype=bibtex]{
+%     \map{
+%         \step[fieldsource=title, match=\regexp{^\P{Cyrillic}*\p{Cyrillic}.*}, final]
+%         \step[fieldset=langid, fieldvalue={russian}]
+%     }
+%     \map{
+%         \step[fieldset=langid, fieldvalue={english}]
+%     }
+%   }
+% }
+
+
+%%% Задаем параметры оформления рисунков и таблиц %%%
+
+\usepackage{graphicx, caption, subcaption}  % Подгружаем пакеты для работы с графикой и настройки подписей
+\graphicspath{{images/}} % Определяем папку с рисунками
+\RequirePackage{caption}
+\DeclareCaptionLabelSeparator{defffis}{ --- }
+\captionsetup[figure]{font=small,  name=Рисунок, justification=centering, labelsep=defffis, labelfont=bf} % Задаем параметры подписей к рисункам: маленький шрифт (в данном случае 12pt), ширина равна ширине текста, полнотекстовая надпись "Рисунок", выравнивание по центру
+\captionsetup[subfigure]{font=small} % Индексы подрисунков а), б) и так далее тоже шрифтом 12pt (по умолчанию делает еще меньше)
+\captionsetup[table]{singlelinecheck=false,font=small,width=\textwidth,justification=justified, labelsep=defffis, labelfont=bf} % Задаем параметры подписей к таблицам: запрещаем переносы, маленький шрифт (в данном случае 12pt), ширина равна ширине текста, выравнивание по ширине
+% \captiondelim{--} % Разделителем между номером рисунка/таблицы и текстом в подписи является длинное тире. Не работает
+\setkeys{Gin}{width=\textwidth} % По умолчанию размер всех добавляемых рисунков будет подгоняться под ширину текста
+\renewcommand{\thesubfigure}{\asbuk{subfigure}} % Нумерация подрисунков строчными буквами кириллицы
+%\setlength{\abovecaptionskip}{0pt} % Отбивка над подписью - тут не меняем
+%\setlength{\belowcaptionskip}{0pt} % Отбивка под подписью - тут не меняем
+\usepackage[section]{placeins} % Объекты типа float (рисунки/таблицы) не вылезают за границы секциии, в которой они объявлены
+
+\usepackage{longtable} %можно делать многостраничные таблицы
+\usepackage{rotating} %можно поворачивать объекты на заданный угол \rotatebox{90}{}
+\usepackage{multirow}
+\usepackage{color,colortbl}
+\definecolor{darkishgreen}{RGB}{39,203,22}
+\definecolor{LightCyan}{rgb}{0.88,1,1}
+\definecolor{Gray}{gray}{0.9}
+\definecolor{lightRed}{RGB}{230,170,150}
+\definecolor{modRed}{RGB}{230,82,90}
+\definecolor{strongRed}{RGB}{230,6,6}
+\setlength{\parindent}{1.25cm} % Устанавливает отступ первой строки 1.25 см
+\usepackage{enumitem}
+\renewcommand*{\labelitemi}{\normalfont{--}}        % В ненумерованных списках для пунктов используем короткое тире
+\makeatletter
+    \AddEnumerateCounter{\asbuk}{\russian@alph}     % Объясняем пакету enumitem, как использовать asbuk
+\makeatother
+\renewcommand{\labelenumii}{\asbuk{enumii})}        % Кириллица для второго уровня нумерации
+\renewcommand{\labelenumiii}{\arabic{enumiii})}     % Арабские цифры для третьего уровня нумерации
+\setlist{noitemsep, leftmargin=*}                   % Убираем интервалы между пунками одного уровня в списке
+% \setlist[1]{labelindent=\parindent}                 % Отступ у пунктов списка равен абзацному отступу
+% \setlist[2]{leftmargin=\parindent}                  % Плюс еще один такой же отступ для следующего уровня
+% \setlist[3]{leftmargin=\parindent}                  % И еще один для третьего уровня
+
+\setlist[itemize]{leftmargin=-0.15cm, itemindent=1.25cm} % Для всех itemize
+\setlist[enumerate]{leftmargin=0.25cm, itemindent=1.25cm} % Для всех enumerate
+\usepackage{pdflscape}
+\linespread{1.25}
+\clubpenalty=10000                                  % Запрещаем разрыв страницы после первой строки абзаца
+\widowpenalty=10000                                 % Запрещаем разрыв страницы после последней строки абзаца
+\brokenpenalty=4991                                 % Ограничение на разрыв страницы, если строка заканчивается переносом
+
+\usepackage{appendix} % Для удобного создания приложений
+\usepackage{tocloft}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+% \newcommand{\intro}[1]{
+%     \stepcounter{section}
+%     \section*{\centeringПриложение \Asbuk{section}}
+%     \begin{center}
+%         \bf{#1}
+%     \end{center}
+%     \markboth{\MakeUppercase{#1}}{}
+%     \addcontentsline{toc}{section}{Приложение \Asbuk{section}. #1}
+% }
+\usepackage{mdframed}
+\usepackage{xcolor} % Для цвета рамки (опционально)
+\usepackage{listings}
+\DeclareCaptionFont{white}{\color{white}} %% это сделает текст заголовка белым
+%% код ниже нарисует серую рамочку вокруг заголовка кода.
+\DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white, singlelinecheck=false,font=small,width=\textwidth,justification=justified, labelsep=defffis}
+
+\lstset{ 
+language=Python,
+basicstyle=\ttfamily\small, % размер и начертание шрифта для подсветки кода
+numbers=left,               % где поставить нумерацию строк (слева\справа)
+numberstyle=\footnotesize,           % размер шрифта для номеров строк
+stepnumber=1,                   % размер шага между двумя номерами строк
+numbersep=5pt,                % как далеко отстоят номера строк от подсвечиваемого кода
+showspaces=false,            % показывать или нет пробелы специальными отступами
+showstringspaces=false,      % показывать или нет пробелы в строках
+showtabs=false,             % показывать или нет табуляцию в строках
+tabsize=2,                 % размер табуляции по умолчанию равен 2 пробелам
+captionpos=t,              % позиция заголовка вверху [t] или внизу [b] 
+breaklines=true,           % автоматически переносить строки (да\нет)
+breakatwhitespace=false, % переносить строки только если есть пробел
+% escapeinside={\%}{*)},   % если нужно добавить комментарии в коде
+escapeinside={(*@}{@*)},  % ✅ Разные открывающий и закрывающий
+columns=fullflexible,
+flexiblecolumns,
+extendedchars=true,
+inputencoding=utf8,
+  % Для кириллицы в комментариях:
+  literate={а}{{\cyra}}1 {б}{{\cyrb}}1 {в}{{\cyrv}}1 {г}{{\cyrg}}1 
+           {д}{{\cyrd}}1 {е}{{\cyre}}1 {ё}{{\cyryo}}1 {ж}{{\cyrzh}}1
+           {з}{{\cyrz}}1 {и}{{\cyri}}1 {й}{{\cyrishrt}}1 {к}{{\cyrk}}1
+           {л}{{\cyrl}}1 {м}{{\cyrm}}1 {н}{{\cyrn}}1 {о}{{\cyro}}1
+           {п}{{\cyrp}}1 {р}{{\cyrr}}1 {с}{{\cyrs}}1 {т}{{\cyrt}}1
+           {у}{{\cyru}}1 {ф}{{\cyrf}}1 {х}{{\cyrh}}1 {ц}{{\cyrc}}1
+           {ч}{{\cyrch}}1 {ш}{{\cyrsh}}1 {щ}{{\cyrshch}}1 {ъ}{{\cyrhrds}}1
+           {ы}{{\cyrery}}1 {ь}{{\cyrsftsn}}1 {э}{{\cyre}}1 {ю}{{\cyryu}}1
+           {я}{{\cyrya}}1
+           {А}{{\CyrA}}1 {Б}{{\CyrB}}1 {В}{{\CyrV}}1 {Г}{{\CyrG}}1
+           {Д}{{\CyrD}}1 {Е}{{\CyrE}}1 {Ё}{{\CyrYo}}1 {Ж}{{\CyrZh}}1
+           {З}{{\CyrZ}}1 {И}{{\CyrI}}1 {Й}{{\CyrIi}}1 {К}{{\CyrK}}1
+           {Л}{{\CyrL}}1 {М}{{\CyrM}}1 {Н}{{\CyrN}}1 {О}{{\CyrO}}1
+           {П}{{\CyrP}}1 {Р}{{\CyrR}}1 {С}{{\CyrS}}1 {Т}{{\CyrT}}1
+           {У}{{\CyrU}}1 {Ф}{{\CyrF}}1 {Х}{{\CyrH}}1 {Ц}{{\CyrTs}}1
+           {Ч}{{\CyrCh}}1 {Ш}{{\CyrSh}}1 {Щ}{{\CyrShch}}1 {Ъ}{{\CyrHrds}}1
+           {Ы}{{\CyrEry}}1 {Ь}{{\CyrSftsn}}1 {Э}{{\CyrE}}1 {Ю}{{\CyrYu}}1
+           {Я}{{\CyrYa}}1,
+keywordstyle=\color{blue}\bfseries,
+identifierstyle=\color{black},
+morecomment=[l]{\#},  % ✅ Экранировать символ #
+commentstyle=\color{green}\ttfamily,
+stringstyle=\color{red}\ttfamily,
+morestring=[b]",
+keepspaces=true,
+% escapechar=\%,
+texcl=false,
+backgroundcolor=\color{white}, % цвет фона подсветки - используем \usepackage{color}
+frame=single              % рисовать рамку вокруг кода
+}
+% \usepackage{minted}
+% \usemintedstyle{colorful}
+% \DeclareCaptionFont{white}{\color{white}} %% это сделает текст заголовка белым
+% %% код ниже нарисует серую рамочку вокруг заголовка кода.
+% \DeclareCaptionFormat{minted}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
+% \captionsetup[minted]{format=minted,labelfont=white,textfont=white, singlelinecheck=false,font=small,width=\textwidth,justification=justified, labelsep=defffis}
+
+
+\begin{document}
+\begin{titlepage} % начало титульной страницы
+\begin{center} % включить выравнивание по центру
+Федеральное государственно автономное образовательное учреждение\\ высшего образования\\
+<<Московский физико-технический институт (государственный университет)>>\\
+Центр дополнительного, дополнительного профессионального\\и онлайн-образования <<Пуск>>\\ [2cm]
+\end{center} % закончить выравнивание по центру
+\par
+\textbf{Направление подготовки:} 01.04.02 Прикладная математика и информатика
+
+\textbf{Направленность (профиль) подготовки:} Науки о данных
+
+\vspace{2cm}
+
+\begin{center} % включить выравнивание по центру
+{\huge\textbf{Наименование темы ВКР}}\\
+(магистерская диссертация)\\[2cm]
+\end{center} % закончить выравнивание по центру
+\flushright {
+\begin{minipage}{0.5\textwidth} % начало маленькой врезки в половину ширины текста
+\begin{flushleft} % выровнять её содержимое по левому краю
+\textbf{Студент:}\\
+ФИО\\
+\hrulefill
+\parskip=-5mm
+\begin{center}\footnotesize\textit{(подпись студента)}\end{center}
+\parskip=3mm
+
+\textbf{Научный руководитель:}
+\par
+ФИО\\
+\hrulefill
+\parskip=-5mm
+\begin{center} \footnotesize\emph{(подпись научного руководителя)}\end{center}
+\parskip=3mm
+\textbf{Консультант:}\\
+ФИО\\
+\hrulefill 
+\parskip=-5mm
+\begin{center} \footnotesize\emph{(подпись консультанта)}\end{center}
+
+\end{flushleft} % конец выравнивания по левому краю
+\end{minipage} % конец врезки
+}
+\vfill % заполнить всё доступное ниже пространство
+\begin{center}{Москва \the\year}\end{center} % вывести дату
+\thispagestyle{empty} % не нумеровать страницу
+\end{titlepage} % конец титульной страницы
+
+\newpage
+\setcounter{page}{2}
+\section{Аннотация}
+Объем аннотации должен составлять не более 1500 знаков. В аннотации необходимо отразить:
+    \begin{itemize}
+    \item цели и задачи работы;
+    \item полученные результаты;
+    \item рекомендации, предложенные на основании данной работы.
+    \end{itemize}
+
+\newpage
+% \renewcommand{\contentsname}{Оглавление}
+\tableofcontents  % содержание
+\suppressfloats
+\newpage
+
+\section{Введение}
+Введение содержит четкое и краткое обоснование выбора темы, ее актуальности, определение объекта и предмета исследования, целей и задач, перечень методов исследования, краткую формулировку научно-теоретической и практической значимости исследования, сведения об апробации результатов исследования (публикации, выступления на конференциях и т.д.).
+
+\section{Обозначения и сокращения}
+Структурный элемент <<Обозначения и сокращения>>  содержит перечень обозначений и сокращений, применяемых в данной работе.
+
+\section{Теоретический анализ}
+\subsection{Требования к теоретическому анализу}
+Охарактеризуйте выводы из научных и аналитических источников, изученных вами, результаты исследования первичных источников (экспертные интервью с описанием выборки и другие). Приведите обзор тезисов и аргументов полемизирующих авторов. Теоретический анализ должен явным образом демонстрировать, как вы вышли на свой исследовательский вопрос и гипотезы; как обнаружили теоретический и практический компоненты проблем. 
+
+Как оформлять ссылки на литературу в \LaTeX{} и прочие полезные ссылки:
+
+Ссылка на литературу \cite{lamport94,author2025}
+Первый абзац о \cite{doe:website} всякой непонятной \cite{Afanasyev92} информации.
+
+Перенос длинных ссылок:
+
+Методичка по \LaTeX{} \url{https://www.bstu.by/uploads/attachments/metodichki/kafedri/EVMiS_Latex.pdf}
+% \sloppy{
+
+% }
+
+Еще одна полезная ссылка \url{https://vestnik.kubsu.ru/public/vestnik3-guide-latex.pdf}
+
+Ссылка на оформление литературы по ГОСТу \url{https://mirror.macomnet.net/pub/CTAN/macros/latex/contrib/biblatex-contrib/biblatex-gost/doc/biblatex-gost.pdf}\\
+
+\href{http://www.example.com/}{Название ссылки, которое может быть длинным \\ и переноситься вручную}
+
+\begin{mdframed}
+Помните, что для глубокого теоретического анализа в своей профильной части вы должны изучить не менее 30 валидных источников (научных статей, аналитических отчетов и так далее).
+\end{mdframed}
+
+\subsection{Проблема и актуальность}
+
+Обоснование актуальности темы исследования и разработки. Анализ состояния проблемы. Обзор литературы. Выявление недостатков и нерешенных проблем.
+
+Опишите практический компонент проблемы — какие разрывы между идеальным и реальным наблюдаются (кто несет потери, терпит неудобства, страдает, гибнет, что деградирует и так далее). 
+Актуальность дает оценку масштаба этой проблемы в выбранных метриках (скольких субъектов она касается, во сколько оцениваются потери и так далее). Приведите ссылки на источники этих данных.
+
+\subsection{Проблема и новизна}
+Опишите теоретический компонент проблемы — что недоисследовано (пробел в знаниях, knowledge gap), на какие вопросы у исследовательского сообщества нет ответа.  
+Новизна должна отвечать на вопрос: «Что нового вы привнесете результатами своего исследования в знания исследовательского сообщества?»
+
+В анализе источников есть выводы, которые показывают:
+\begin{itemize}
+\item какие подходы уже существуют;
+\item где их ограничения/противоречия;
+\item почему ваш исследовательский ход осмысленен.
+\end{itemize}
+
+Актуальность и новизна не декларативны: они аргументированы через состояние практики/теории и связаны с проблемой.
+
+Новизна — это вклад в знание/подход, а не «мы применили технологию X» без контекста.
+
+
+\subsection{Цель исследования}
+Постановка задачи, формулирование цели работы, формулирование задач, требующих решения для достижения поставленной цели.
+
+Сформулированная в 1–2 предложениях цель исследования.
+
+Объект исследования:
+
+Предмет исследования:
+\\
+{\bf Примечание.} 
+
+Исследовательская рамка четко задана и логична: Проблема → Цель → Объект/предмет → Вопрос.
+
+Проблема исследования сформулирована четко и узко, с отсылками к источникам, без расплывчатых формулировок уровня «в сфере Х много проблем». 
+
+Цель проверяема и логически вытекает из проблемы (напомним, что цель — это ожидаемый результат исследования, а не просто «провести анализ» или «разработать»).
+
+Объект и предмет не подменяют друг друга и согласованы с тем, что вы реально измеряли/проверяли на этапе проверки гипотезы (в эмпирической части, включая эксперимент).
+
+Рамка исследования должна быть настолько ясна, чтобы внешний читатель с академическим бэкграундом мог понять, что вы исследовали, за 1–2 абзаца без дополнительных устных пояснений.
+
+\subsection{Гипотеза(ы) исследования}
+На основе теоретического анализа сформулируйте гипотезу или несколько. Гипотеза должна быть сформулирована однозначно, опровержимо, нетривиально и должны быть адекватна предлагаемой вами методологии. Не приводите сравнительного описания («лучше», «сильнее», «быстрее») без упоминания того, с чем сравниваете (конкретное решение, нетрадиционные подходы и прочее).  Гипотеза должна быть описана с с измеримыми параметрами (метрики, пороги, критерии, подтверждения/опровержения). 
+
+\textcolor{red}{\textit{\textbf{Важно!}}} Помните, что проверкой своей гипотезы вы целитесь в инновационную дельту — достичь такого решения в своей сфере, которое превзойдет по какому-то параметру или нескольким конкурентные аналоги.
+
+При наличии нескольких гипотез выделите все по порядку.
+
+\subsection{Как писать формулы и ссылки на них}
+
+  \label{energy}
+  \begin{eqnarray}
+  \label{energy}
+    E &=& mc^2\\
+  \label{mass}
+    m &=& \frac{m_0}{\sqrt{1-\frac{v^2}{c^2}}}
+  \end{eqnarray}
+
+ \begin{equation}
+   \label{eq:normal_dist}
+   \frac{1}{\sigma\sqrt{2\pi}}
+     \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)
+ \end{equation}
+
+ Ссылка на формулу \eqref{eq:normal_dist}, \eqref{energy}, \eqref{mass}
+
+\begin{equation}
+\label{eqn:somelabel}
+e=mc^2
+\end{equation}
+
+Ссылка на несколько формул \eqref{eq:normal_dist}--\eqref{eqn:somelabel}
+
+\begin{equation}\label{eq:Pobsh}
+P_{\text{общ}}=P_{\text {затух}} + P_S + P_C + P_{\text{З}} + P_P
+\end{equation}
+% Далее идёт расшифровка параметров, входящих в формулу
+где $P_{\text{общ}}$ --- общие потери в линиях связи;\\
+$P_{\text {затух}}$ --- полное затухание в оптическом волокне;\\
+$P_S$ --- полные потери в сростках;\\
+$P_C$ --- полные потери в соединителях;\\
+$P_{\text{З}}$ --- потери в разветвителях волокон;\\
+$P_P$ --- потери на эксплуатационный запас.
+
+\section{Методология и методика исследования}
+\subsection{Требования к методам и методологии}
+Описание процесса реализации выбранных методов и средств решения поставленных задач.
+
+Методология исследования осмыслена и ведет к методике проверки гипотез.
+
+Для каждой гипотезы должны быть приведены задачи методики для проверки гипотез. Методика описывается пошагово (по задачам), емко, с такой детализацией методов, чтобы внешний исследователь понял, что и за чем нужно сделать и на что обратить внимание. Должна быть полная описанная пошагово методика, укажите в ней объект и предмет своего исследования. 
+
+\textcolor{red}{\textit{\textbf{Важно!}}} Методика должна содержать по меньшей мере один эксперимент (помните, что это означает, что вы непосредственно влияете на ваш объект).
+
+Должны быть описаны датасеты: содержание, актуальность (с указанием года), источник (откуда взяты/собраны). Источники данных могут быть первичными (собранными самостоятельно из интервью, открытых источников и пр.), а также вторичным (с указанием и отсылками).
+Должно быть прокомментировано, как вы используете эти данные (в рамках каких задач и методов).
+
+Дизайн эксперимента и методика проверки гипотез прозрачны. Это значит, что понятно:
+\begin{itemize}
+\item почему выбранные методы соответствуют проблеме и гипотезе;
+\item какие данные и почему нужны;
+\item как устроена проверка (последовательность шагов).
+\end{itemize}
+
+Методика воспроизводима, так что внешний исследователь может повторить ключевые элементы проверки.
+\begin{mdframed}
+Оценивается способность спроектировать и реализовать исследование как систему, которая не формально, а реально достигает цели и подтверждает или опровергает гипотезы. Хороший набор методов может говорить о некоторых профессиональных навыках, но без связывания в систему невозможно говорить о компетенции обучающегося и, соответственно, оценить ее. При знакомстве с методологией и методикой исследования читатель должен смочь провести мысленную репликацию по своему тексту или выступлению — понять, что и в каком порядке вы делали и что будет считаться доказательством вашей гипотезы.
+\end{mdframed}
+
+\subsection{Как сделать таблицу}
+
+Ссылка на создание таблиц \url{https://truben.no/latex/table/}
+\renewcommand{\tabcolsep}{1cm}   %% increase table column spacing
+\begin{table}[H]
+\caption{Пример таблицы с растянутыми столбцами}
+    \centering
+    \begin{tabular}{|c|c|c|}
+    \hline
+        1 & 2 & 3\\\hline
+        4 & 5 & 6\\\hline
+        7 & 8 & 9\\\hline
+    \end{tabular}
+    \label{tab:placeholder}
+\end{table}
+
+Ссылка на таблицу \ref{tab:placeholder}
+
+\renewcommand{\arraystretch}{1.8} %% increase table row spacing
+\renewcommand{\tabcolsep}{1cm}   %% increase table column spacing
+\begin{table}[H]
+\caption{\label{tab:bolts} Пример таблицы с объединенными строками и столбцами}
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\multirow{3}{*}{Размеры нестандартных болтов} & \multicolumn{2}{c|}{Диаметр} \\
+\cline{2-3}
+            & \cellcolor{Gray}Норма & \cellcolor{Gray}Разброс \\
+\cline{2-3}
+            & 10 мм & 1 мм \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Результаты}
+\subsection{Требования к представлению результатов}
+Описание полученных данных. Наглядное представление результатов в виде таблиц, графиков, диаграмм. По каждой гипотезе приведите результаты реализации методики и метрики/состояния и иные результаты, которых удалось достичь. Сопроводите визуализацией и приведите резюме анализа. Визуализацию вы адаптируете под себя (таблицы, схемы, графики, диаграммы, код и пр.; собственно, статистические значения по проверкам). 
+Прикрепите ссылки на результаты. 
+
+\subsection{Как нарисовать график и поместить рисунок}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[ 
+	view={110}{10}, 
+	colormap/greenyellow,
+	colorbar 
+]
+\addplot3[surf] {-sin(x^2 + y^2)};
+\addlegendentry{График}
+\end{axis}
+\label{graphic}
+\end{tikzpicture}
+\caption{Пример графика 1}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis} [
+    legend pos = north west, 
+    ymin = 0, 
+    grid = major
+]
+\legend{ 
+	$\log_2(x)$, 
+	$\ln(x)$, 
+	$\log_{10}(x)$
+};
+\addplot {log2(x)};
+\addplot {ln(x)};
+\addplot {log10(x)};
+\end{axis}
+\end{tikzpicture}
+\caption{Пример графиков 2}
+\end{figure}
+
+\emph{\bfseries{Пример}} --- Вот так пишется и оформляется пример.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Screenshot_8.png}
+    \caption{Пример, как вставить рисунок}
+    \label{risunok}
+\end{figure}
+% Рисунок с обтеканием текста:
+% \begin{wrapfigure}[16]{r}{0.5\linewidth} %[16] - определяет высоту рисунка в число строк текста и позволяет отбить дополнительное место для рисунков. {r} - положение картинки на странице, можно слева {l} или справа {r}. {0.5\linewidth} - ширина картинки в относительных единицах от ширины линии.
+% \vspace{-5ex}
+% \includegraphics[width=\linewidth]{image}
+% \caption{Some caption}
+% \label{fig:somelabel}
+% \end{wrapfigure}
+%\renewcommand{\thefigure}{\thechapter.\arabic{figure}} %счетчик - рис.1.1, рис.1.2 и тд.
+\begin{figure}[H]
+\begin{minipage}[h]{0.47\linewidth}
+\center{\includegraphics[width=1\linewidth]{Screenshot_8.png}} а) \\
+\end{minipage}
+\hfill
+\begin{minipage}[h]{0.47\linewidth}
+\center{\includegraphics[width=1\linewidth]{Screenshot_8.png}} \\б)
+\end{minipage}
+\vfill
+\begin{minipage}[h]{0.47\linewidth}
+\center{\includegraphics[width=1\linewidth]{Screenshot_8.png}} в) \\
+\end{minipage}
+\hfill
+\begin{minipage}[h]{0.47\linewidth}
+\center{\includegraphics[width=1\linewidth]{Screenshot_8.png}} г) \\
+\end{minipage}
+\caption{Пример вставки нескольких рисунков: а) рисунок а, б)
+рисунок б, в) рисунок в, г) рисунок г}
+\label{ris:experimentalcorrelationsignals}
+\end{figure}
+\begin{figure}[H]
+\begin{center}
+\begin{minipage}[h]{0.4\linewidth}
+\includegraphics[width=1\linewidth]{Screenshot_8.png}
+\caption{Пример вставки двух рисунков с разными названиями} %% подпись к рисунку
+\label{ris:experimoriginal} %% метка рисунка для ссылки на него
+\end{minipage}
+\hfill
+\begin{minipage}[ht]{0.4\linewidth}
+\includegraphics[width=1\linewidth]{Screenshot_8.png}
+\caption{Закодированное изображение}
+\label{ris:experimcoded}
+\end{minipage}
+\end{center}
+\end{figure}
+Ссылка на рисунок \ref{risunok}.
+
+\subsection{Анализ результатов}
+Анализ и интерпретация полученных результатов исследования, обоснование достоверности и оценка их соответствия цели и задачам работы.
+
+\section{Выводы}
+Обобщение результатов работы.
+
+Выводы:
+\begin{itemize}
+\item логически следуют из результатов;
+\item прямо соотносятся с гипотезой и целью;
+\item не подменяются пересказом графиков/таблиц и чистым описание полученных данных.
+\end{itemize}
+
+Честно отражены ограничения и допущения (как часть научной корректности).
+
+Понятно, что именно считается подтверждением/опровержением гипотез.
+
+Перечисление выводов:
+\begin{enumerate}
+    \item Гипотеза 1 подтверждена
+    \item Гипотеза 2 опровергнута
+    \begin{enumerate}[label=\asbuk*)]
+    \item Вывод 1 по результатам
+    \item Вывод 2 по результатам
+    \end{enumerate}
+    \begin{itemize}
+    \item[-] максимальная глубина вложенности равна 4;
+    \item[-] отступы и символы перед элементами выбираются автоматически.
+    \end{itemize}
+    \item Вывод 3
+        \begin{itemize}
+        \item максимальная глубина вложенности равна 4;
+        \item отступы и символы перед элементами выбираются автоматически.
+        \end{itemize}
+\end{enumerate}
+
+Ссылка на \ref{PrilA}, \ref{PrilB}.
+Ссылка на формулу в приложении \ref{eq:normal_dist2}
+
+\section{Перспективы и рекомендации}
+\subsection{Требования к перспективам и рекомендациям}
+Рекомендации по использованию полученных результатов (практическая значимость работы).
+
+Изложение плана дальнейших исследований -- рекомендации по использованию результатов исследования для других исследователей и/или в определенном поле.
+
+Перспективы вытекают из результатов по проверке гипотезы и связаны с ней.
+
+Здесь вам важно описать границы применимости результатов (внешняя валидность). 
+
+Как это может быть описано:
+\begin{enumerate}
+\item Есть направления продолжения:
+\begin{itemize}
+\item какие проверки логично сделать дальше;
+\item какие альтернативы, варианты дизайна, методики эксперимента стоит рассмотреть;
+\item какие вопросы остаются открыты.
+\end{itemize}
+\item Есть рекомендации для исследовательской практики и/или прикладного применения, которые вытекают из ваших данных (а не из ожиданий).
+\end{enumerate}
+
+\subsection{Название подраздела}
+
+\section{Заключение}
+Заключение -- последовательное логически стройное изложение итогов исследования в соответствии с целью и задачами, поставленными и сформулированными во введении. Заключение может включать в себя практические предложения, что повышает ценность теоретического материала, но не должно повторять введение.
+
+Если реализация вашего исследования предполагала и другие задачи, выходящие за рамки описанной методологии, опишите их. 
+Опишите каждую задачу, которая остались за рамками исследовательской части. Емко укажите, что вы сделали и для чего, каков результат. Приложите ссылку на каждый результат, убедитесь, что файлы открыты для изучения.
+
+Дайте информацию о том, где и когда ваше исследование было представлено на конференции и/или в публикации. 
+Крайний срок выступления — до первой недели июня \the\year~года.
+
+Если в рамках исследования вы регистрировали РИД (ПО, полезную модель, патент, депонировали объекты ИС и т. д.), участие в лабораториях, конкурсах и грантах, укажите эту информацию.
+Если ваше решение прикладное и внедрено в эксплуатацию, укажите информацию о том, кем и где. 
+
+% \begin{landscape}
+% % текст в альбомной ориентации
+% % (таблица, рисунок, схема и т. п.)
+% \end{landscape}
+
+\addcontentsline{toc}{section}{Список литературы}
+\nocite{*}  % ✅ Показать ВСЕ записи из .bib, даже без цитирований
+\bibliographystyle{utf8gost705u}
+\bibliography{my_bibliography}
+%\printbibliography[title={Список литературы}] % выводит список литературы
+%\nocite{*}  % ✅ Показать ВСЕ записи из .bib, даже без цитирований
+
+%% Если не хочется заморачиваться с отдельным библиотечным файлом:
+% \begin{thebibliography}{9} 
+% \bibitem{lamport94} Leslie Lamport, \emph{\LaTeX: a document preparation system}. Addison Wesley, Massachusetts, 2nd edition, 1994. 
+% \bibitem{lamport941} Leslie Lamport, \emph{\LaTeX: a document preparation system}. Addison Wesley, Massachusetts, 2nd edition, 1994. 
+% \end{thebibliography}
+
+\newpage
+
+\appendix %Тут идут приложения
+\renewcommand{\thesection}{Приложение \Asbuk{section}}
+\section{\centering}\label{PrilA}
+\begin{center} 
+\hspace*{-7mm}{\large\textbf{Артефакты}}
+\end{center}
+\setcounter{equation}{0} % Сбрасываем счетчик формул
+\renewcommand{\theequation}{\Asbuk{section}.\arabic{equation}} % Устанавливаем префикс "А."
+\setcounter{table}{0} % Сбрасываем счетчик формул
+\renewcommand{\thetable}{\Asbuk{section}.\arabic{table}} % Устанавливаем префикс "А." для таблицы
+\setcounter{figure}{0} % Сбрасываем счетчик формул
+\renewcommand{\thefigure}{\Asbuk{section}.\arabic{figure}} % Устанавливаем префикс "А." для рисунка
+
+Артефакты важны не сами по себе, а как элементы, обеспечивают воспроизводимость, подтверждают корректность методики, позволяют валидировать результаты.
+
+Примеры артефактов в рамках исследования:
+\begin{itemize}
+\item код, репозиторий (или эквивалент);
+\item модели, веса, конфигурации (если применимо);
+\item датасеты или описание того, как они получены;
+\item таблицы результатов, графики, логи эксперимента.
+\end{itemize}
+
+\begin{mdframed} При отсылке к артефакту или при добавлении артефакта должна быть понятна связь: Артефакт → Шаг методики → Конкретный результат (а не «вот репозиторий на всякий случай»).
+\\
+Отсутствие артефактов — повод усомниться в описанных результатах и выводах исследования: по вашим материалам читатель должен смочь не только посмотреть на исследование, но и проверить, воспроизводя в своем исследовании.\end{mdframed}
+
+Изменение нумерации формул в приложении:
+\begin{equation}
+   \label{eq:normal_dist2}
+   \frac{1}{\sigma\sqrt{2\pi}}
+     \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)
+\end{equation}
+
+\begin{equation}
+   \label{eq:normal_dist3}
+   \frac{1}{\sigma\sqrt{2\pi}}
+     \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)
+\end{equation}
+
+\renewcommand{\arraystretch}{1} %% increase table row spacing
+\begin{table}[H]
+\caption{Это таблица в приложении со своей нумерацией}
+    \centering
+    \begin{tabular}{|c|c|c|}
+    \hline
+        1 & 2 & 3\\\hline
+        4 & 5 & 6\\\hline
+        7 & 8 & 9\\\hline
+    \end{tabular}
+    \label{tab:placeholder1}
+\end{table}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Screenshot_8.png}
+    \caption{Это рисунок в приложении со своей нумерацией}
+    \label{risunok2}
+\end{figure}
+
+
+\newpage
+\section{\centering}\label{PrilB}
+\begin{center} 
+\hspace*{-7mm}{\large\textbf{Артефакты}}
+\end{center}
+\setcounter{equation}{0} % Сбрасываем счетчик формул
+\renewcommand{\theequation}{\Asbuk{section}.\arabic{equation}} % Устанавливаем префикс "А."
+\setcounter{table}{0} % Сбрасываем счетчик формул
+\renewcommand{\thetable}{\Asbuk{section}.\arabic{table}} % Устанавливаем префикс "А." для таблицы
+\setcounter{figure}{0} % Сбрасываем счетчик формул
+\renewcommand{\thefigure}{\Asbuk{section}.\arabic{figure}} % Устанавливаем префикс "А." для рисунка
+
+Изменение нумерации формул в новом приложении:
+\begin{equation}
+   \label{eq:normal_dist4}
+   \frac{1}{\sigma\sqrt{2\pi}}
+     \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)
+\end{equation}
+
+Рекомендации для оформления кода некоторых языков программирования:
+\begin{itemize}
+\item JavaScript — \url{https://www.w3schools.com/js/js_conventions.asp}
+\item Ruby — \url{https://github.com/arbox/ruby-style-guide/blob/master/README-ruRU.md}
+\item Go — \url{https://go.dev/doc/effective_go}.
+\end{itemize}
+
+Чтобы код выделялся на фоне основного текста, используйте серый фон или рамку:
+\begin{lstlisting}[label=some-code, caption=Фрагмент кода функции subfinder]
+def subfinder(words_list, answer_list): # код функции
+  matches = []
+  start_indices = []
+  end_indices = []
+  for idx, i in enumerate(range(len(words_list))):
+    if words_list[i] == answer_list[0] and words_list[i : i + len(answer_list)] == answer_list:
+      matches.append(answer_list)
+      start_indices.append(idx)
+      end_indices.append(idx + len(answer_list) - 1)
+    if matches:
+      return matches[0], start_indices[0], end_indices[0]
+    else:
+      return None, 0, 0
+\end{lstlisting}
+%\captionof{lstlisting}{Фрагмент кода функции subfinder}  % ✅ Русская подпись отдельно
+% \begin{minted}[frame=lines, framesep=2mm, fontsize=\small, label=some-code,caption=Фрагмент кода функции subfinder]{python}
+% def subfinder(words_list, answer_list): # code of function
+%   matches = []
+%   start_indices = []
+%   end_indices = []
+%   for idx, i in enumerate(range(len(words_list))):
+%     if words_list[i] == answer_list[0] and words_list[i : i + len(answer_list)] == answer_list:
+%       matches.append(answer_list)
+%       start_indices.append(idx)
+%       end_indices.append(idx + len(answer_list) - 1)
+%     if matches:
+%       return matches[0], start_indices[0], end_indices[0]
+%     else:
+%       return None, 0, 0
+% \end{minted}
+
+% Импорт из внешнего файла:
+% \lstinputlisting[language=Python, frame=single]{script.py}
+
+
+
+% \intro{Название приложения}\label{PrilA}
+
+
+% Содержание приложения
+
+% \newpage
+% \intro{Название приложения}
+% \label{PrilB}
+
+% Содержание приложения
+
+\end{document}
+

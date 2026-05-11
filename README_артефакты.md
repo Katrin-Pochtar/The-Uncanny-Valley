@@ -10,7 +10,7 @@
 
 ## Принцип связи артефактов с исследованием
 
-Каждый артефакт привязан к одному из пяти этапов методики и даёт конкретный результат, упомянутый в тексте ВКР. Полный реестр приведён в Приложении А `main.tex`; ниже - рабочая версия для навигации по этой папке.
+Каждый артефакт привязан к одному из пяти этапов методики и даёт конкретный результат, упомянутый в тексте ВКР. Полный реестр приведён в Приложении А `masters_thesis.tex`; ниже - рабочая версия для навигации по этой папке.
 
 | Артефакт | Этап методики | Конкретный результат в ВКР |
 |---|---|---|
@@ -19,12 +19,12 @@
 | `notebooks/03_emotion_utils.ipynb` | Этап 2 - утилиты | Унифицированный интерфейс загрузки/инференса для этапов 4-5 |
 | `notebooks/04_encoder_ceiling.ipynb` | Этап 2 - потолок задачи | Test macro-F1: аудио 0,739; видео 0,876 (табл. 2 в ВКР) |
 | `notebooks/05_external_classifier_screening.ipynb` | Этап 3 - скрининг внешних FER | Отбор `motheecreator/vit-FER` и `Rajaram1996/FacialEmoRecog` из шести кандидатов; отвергнуты 4 (табл. 3 в ВКР) |
-| `notebooks/06_wav2lip_loss_ablation.ipynb` | Этап 4 - абляция Wav2Lip | CE+KL победил с val F1 = 0,737 (Δ = +0,118 от baseline); cos-only показал отрицательный Δ - доказательство риска коллапса проекций (табл. 4 в ВКР) |
-| `notebooks/07_wav2lip_finetune_H1.ipynb` | Этап 5 - проверка H1 | Финальная модель `wav2lip-cekl-01`: F1 0,611 → 0,718 на тесте (Δ = +0,107); LSE-C изменился незначимо (p = 0,61) |
+| `notebooks/06_wav2lip_loss_ablation.ipynb` | Этап 4 - абляция Wav2Lip | CE+KL победил с val F1 = 0,737 (Δ = +11,8% от baseline); cos-only показал отрицательный Δ - доказательство риска коллапса проекций (табл. 4 в ВКР) |
+| `notebooks/07_wav2lip_finetune_H1.ipynb` | Этап 5 - проверка H1 | Финальная модель `wav2lip-cekl-01`: F1 0,611 → 0,718 на тесте (Δ = +10,7%); LSE-C изменился незначимо (p = 0,61) |
 | `notebooks/08_wav2lip_external_evaluation.ipynb` | Этап 5 - внешняя валидация Wav2Lip | Межклассификаторное согласие True для 8 из 8 эмоциональных конфигов; Spearman ρ(internal, external) = +0,612 |
-| `notebooks/09_sadtalker_loss_ablation.ipynb` | Этап 4 - абляция SadTalker | CE+COS победил на 3DMM-коэффициентах: val F1 0,507 → 0,651 (Δ = +0,143, McNemar p = 0,0095) |
+| `notebooks/09_sadtalker_loss_ablation.ipynb` | Этап 4 - абляция SadTalker | CE+COS победил на 3DMM-коэффициентах: val F1 0,507 → 0,651 (Δ = +14,3%, McNemar p = 0,0095) |
 | `notebooks/10_sadtalker_finetune_H2.ipynb` | Этап 5 - проверка H2 | На rendered-уровне эффект между двумя внешними классификаторами расходится; H2 в строгой формулировке не подтверждена |
-| `notebooks/11_bootstrap_analysis.ipynb` | Этап 5 - статистика | Бутстрап-95 %-CI: для cekl-05 на Rajaram1996/test интервал [+0,004; +0,176] не включает ноль (значимый эффект) |
+| `notebooks/11_bootstrap_analysis.ipynb` | Этап 5 - статистика | Бутстрап-95 %-CI: для cekl-05 на Rajaram1996/test интервал [+0,4%; +17,6%] не включает ноль (значимый эффект) |
 | `code/cross_modal_loss.py` | Этап 4 - реализация функции потерь | Референсная реализация CE+KL-комбинации, использованная в этапе 5 |
 | `checkpoints/audio_encoder.pth` | Этап 2 - финальный аудиоэнкодер | Веса `superb/wav2vec2-base-superb-er` после дообучения на 4 эмоциях |
 | `checkpoints/video_encoder.pth` | Этап 2 - финальный видеоэнкодер | Веса `facebook/timesformer-base-finetuned-k400` (8 кадров) после дообучения |
@@ -136,7 +136,7 @@ state_dict = ckpt["state_dict"] if "state_dict" in ckpt else ckpt
 
 `https://github.com/Katrin-Pochtar/The-Uncanny-Valley`
 
-Содержит идентичный набор ноутбуков, `main.tex` диссертации, README с описанием пайплайна.
+Содержит идентичный набор ноутбуков, `masters_thesis.tex` диссертации, README с описанием пайплайна.
 
 ### W&B-проекты с журналами обучения
 

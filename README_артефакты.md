@@ -26,10 +26,10 @@
 | `notebooks/10_sadtalker_finetune_H2.ipynb` | Этап 5 - проверка H2 | На rendered-уровне эффект между двумя внешними классификаторами расходится; H2 в строгой формулировке не подтверждена |
 | `notebooks/11_bootstrap_analysis.ipynb` | Этап 5 - статистика | Бутстрап-95 %-CI: для cekl-05 на Rajaram1996/test интервал [+0,4%; +17,6%] не включает ноль (значимый эффект) |
 | `code/cross_modal_loss.py` | Этап 4 - реализация функции потерь | Референсная реализация CE+KL-комбинации, использованная в этапе 5 |
-| `checkpoints/audio_encoder.pth` | Этап 2 - финальный аудиоэнкодер | Веса `superb/wav2vec2-base-superb-er` после дообучения на 4 эмоциях |
-| `checkpoints/video_encoder.pth` | Этап 2 - финальный видеоэнкодер | Веса `facebook/timesformer-base-finetuned-k400` (8 кадров) после дообучения |
-| `checkpoints/wav2lip_cekl-01.pth` | Этап 5 - финальная модель H1 | Дообученный Wav2Lip с CE+KL ($s=0{,}10$, $w_{\text{ce}}=0{,}005$, $w_{\text{kl}}=0{,}010$, $T=2{,}0$) |
-| `checkpoints/sadtalker_abl-ce-cos.pth` | Этап 5 - финальная модель H2 | Дообученный SadTalker с CE+COS на 3DMM-коэффициент-уровне |
+| `checkpoints/audio_encoder/` | Этап 2 - финальный аудиоэнкодер | Веса `superb/wav2vec2-base-superb-er` после дообучения на 4 эмоциях (HuggingFace-формат: `config.json` + `model.safetensors` + `preprocessor_config.json`) |
+| `checkpoints/video_encoder/` | Этап 2 - финальный видеоэнкодер | Веса `facebook/timesformer-base-finetuned-k400` (8 кадров) после дообучения (HuggingFace-формат) |
+| `checkpoints/wav2lip.pth` | Этап 5 - финальная модель H1 | Дообученный Wav2Lip с CE+KL ($s=0{,}10$, $w_{\text{ce}}=0{,}005$, $w_{\text{kl}}=0{,}010$, $T=2{,}0$); конфигурация cekl-01 |
+| `checkpoints/sadtalker.pth` | Этап 5 - финальная модель H2 | Дообученный SadTalker с CE+COS на 3DMM-коэффициент-уровне |
 
 ---
 
@@ -53,10 +53,16 @@
 ├── code/
 │   └── cross_modal_loss.py       ← функция потерь, отдельным модулем
 ├── checkpoints/                  ← веса финальных моделей
-│   ├── audio_encoder.pth
-│   ├── video_encoder.pth
-│   ├── wav2lip_cekl-01.pth
-│   └── sadtalker_abl-ce-cos.pth
+│   ├── audio_encoder/             ← HuggingFace-формат, целая папка
+│   │   ├── config.json
+│   │   ├── model.safetensors
+│   │   └── preprocessor_config.json
+│   ├── video_encoder/             ← HuggingFace-формат, целая папка
+│   │   ├── config.json
+│   │   ├── model.safetensors
+│   │   └── preprocessor_config.json
+│   ├── wav2lip.pth                ← традиционный PyTorch-чекпойнт
+│   └── sadtalker.pth              ← традиционный PyTorch-чекпойнт
 ├── repo_link.txt                 ← ссылка на открытый репозиторий
 └── wandb_links.txt               ← ссылки на четыре публичных W&B-проекта
 ```
@@ -105,14 +111,14 @@ import torch
 audio_model = Wav2Vec2ForSequenceClassification.from_pretrained(
     "superb/wav2vec2-base-superb-er", num_labels=4, ignore_mismatched_sizes=True,
 )
-audio_model.load_state_dict(torch.load("checkpoints/audio_encoder.pth"))
+audio_model = audio_model.from_pretrained("checkpoints/audio_encoder")
 audio_model.eval()
 
 # Видеоэнкодер
 video_model = TimesformerForVideoClassification.from_pretrained(
     "facebook/timesformer-base-finetuned-k400", num_labels=4, ignore_mismatched_sizes=True,
 )
-video_model.load_state_dict(torch.load("checkpoints/video_encoder.pth"))
+video_model = video_model.from_pretrained("checkpoints/video_encoder")
 video_model.eval()
 ```
 

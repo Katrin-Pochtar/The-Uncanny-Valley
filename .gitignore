@@ -2,8 +2,10 @@
 .DS_Store
 **/.DS_Store
 
-# Claude Code local settings and cache
-.claude/
+# Claude Code local settings and cache (но НЕ skills/, который намеренно закоммичен)
+.claude/.DS_Store
+.claude/settings.local.json
+.claude/worktrees/
 .claude.json
 .claude.local.json
 
